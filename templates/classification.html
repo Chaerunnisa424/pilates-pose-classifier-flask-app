@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <title>Deteksi Pose Pilates</title>
+    <meta charset="UTF-8">
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="static/assets/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/assets/css/jquery-ui.css">
+    <link rel="stylesheet" href="static/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/assets/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="static/assets/css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="static/assets/css/jquery.fancybox.min.css">
+
+    <link rel="stylesheet" href="static/assets/css/bootstrap-datepicker.css">
+
+    <link rel="stylesheet" href="static/assets/fonts/flaticon/font/flaticon.css">
+
+    <link rel="stylesheet" href="static/assets/css/aos.css">
+    <link href="static/assets/css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="static/assets/css/style.css">
+    
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="site-wrap">
+        <!-- Mobile Navigation -->
+        <div class="site-mobile-menu site-navbar-target">
+            <div class="site-mobile-menu-header">
+                <div class="site-mobile-menu-close mt-3">
+                    <span class="icon-close2 js-menu-toggle"></span>
+                </div>
+            </div>
+            <div class="site-mobile-menu-body"></div>
+        </div>
+
+        <!-- Header Section -->
+        <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center">
+                    <div class="site-logo"><a href="/home">Pilapose<span>.</span></a></div>
+                    <div class="ml-auto">
+                        <nav class="site-navigation position-relative text-right" role="navigation">
+                            <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                                <li><a href="/home" class="nav-link">Home</a></li>
+                                <li><a href="/programs" class="nav-link">Programs</a></li>
+                                <li><a href="/exercises" class="nav-link">Exercise</a></li>
+                                <li><a href="#healthtips-section" class="nav-link">Health Tips</a></li>
+                                <li><a href="/chatbot" class="nav-link">Flexbot</a></li>
+                                <li><a href="/contact" class="nav-link">Contact</a></li>
+                                <li>
+                                    <a href="{{ url_for('profile') }}">
+                                        <img src="{{ url_for('static', filename='assets/images/user.png') }}" alt="Profile Icon" style="width: 24px; height: 24px;">
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle float-right">
+                            <span class="icon-menu h3"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Deteksi Pose Section -->
+        <div class="site-section" id="pose-detection" style="background-color: rgba(0, 0, 0, 0.6); background-size: cover; background-repeat: no-repeat; background-position: center; min-height: 100vh;">
+            <div class="container text-center"><br>
+                <h2 class="heading mb-3" style="color: white; font-weight: bold;">Pose Pilates Correction Realtime</h2>
+
+                <div id="video-container" class="mt-4">
+                    <img src="{{ url_for('video_feed') }}" width="720" height="480" alt="Video Deteksi Pose" style="border-radius: 8px; border: 2px solid #ddd;">
+                </div>
+
+                <div class="back-btn mt-4 text-center">
+                    <a href="/exercise" class="btn btn-primary">Kembali ke Latihan</a>
+                </div>
+            </div>
+        </div>
+        
+        
+
+        <!-- Footer Section -->
+        <footer class="footer-section" style="background-color: #f9f9f9; padding: 60px 0;">
+            <div class="container">
+                <hr style="border: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 2rem;">
+                <div class="row">
+                    <!-- About Section -->
+                    <div class="col-md-4">
+                        <h3 style="color: #333;">Tentang Pilapose</h3>
+                        <p>Pilapose adalah platform inovatif untuk membantu Anda mencapai kebugaran tubuh dan keseimbangan pikiran melalui Pilates. Nikmati fitur seperti program terstruktur, deteksi gerakan AI, dan chatbot interaktif.</p>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="col-md-3 ml-auto">
+                        <h3 style="color: #333;">Tautan Cepat</h3>
+                        <ul class="list-unstyled footer-links">
+                            <li><a href="/home">Beranda</a></li>
+                            <li><a href="#program-section">Program</a></li>
+                            <li><a href="/exercise">Latihan</a></li>
+                            <li><a href="/healthtips">Tips Kesehatan</a></li>
+                            <li><a href="/chatbot">Chatbot</a></li>
+                            <li><a href="/contact">Kontak</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Subscription Form -->
+                    <div class="col-md-4">
+                        <h3 style="color: #333;">Berlangganan</h3>
+                        <p>Dapatkan tips kebugaran terbaru dan pembaruan langsung ke kotak masuk Anda.</p>
+                        <form action="#">
+                            <div class="d-flex mb-5">
+                                <input type="text" class="form-control rounded-0" placeholder="Email Anda" style="border: 1px solid #ccc;">
+                                <input type="submit" class="btn btn-primary rounded-0" value="Berlangganan" style="background-color: #c83660; border: none;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row pt-5 mt-5 text-center">
+                    <div class="col-md-12">
+                        <p>&copy; <script>document.write(new Date().getFullYear());</script> Pilapose. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="static/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="static/assets/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="static/assets/js/jquery-ui.js"></script>
+    <script src="static/assets/js/popper.min.js"></script>
+    <script src="static/assets/js/bootstrap.min.js"></script>
+    <script src="static/assets/js/owl.carousel.min.js"></script>
+    <script src="static/assets/js/jquery.stellar.min.js"></script>
+    <script src="static/assets/js/jquery.countdown.min.js"></script>
+    <script src="static/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="static/assets/js/jquery.easing.1.3.js"></script>
+    <script src="static/assets/js/aos.js"></script>
+    <script src="static/assets/js/jquery.fancybox.min.js"></script>
+    <script src="static/assets/js/jquery.sticky.js"></script>
+    <script src="static/assets/js/jquery.mb.YTPlayer.min.js"></script>
+    <script src="static/assets/js/main.js"></script>
+</body>
+
+</html>

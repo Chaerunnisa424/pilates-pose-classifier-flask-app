@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programs</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: 'Muli', sans-serif;
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f7fa;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #c14661;
+            color: #fff;
+            height: 100%;
+            padding-top: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar .site-logo {
+            font-size: 24px;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #fff;
+            display: block;
+            padding: 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #cac8c9;
+            color: #fb4e65;
+            transform: scale(1.1);
+        }
+        .sidebar a.active {
+            background-color: #cac8c9;
+            color: white;
+            transform: scale(1);
+        }
+        .sidebar a.active:hover {
+            background-color: #cac8c9;
+            transform: scale(1.1);
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+        .navbar {
+            background-color: #c14661;
+            padding: 11px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }   
+        .navbar .site-logo {
+            font-size: 24px;
+            color: #fff;
+            font-weight: 600;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            color: #cac8c9;
+        }
+        .table {
+            background-color: white;
+            border-radius: 10px;
+        }
+        .table th {
+            text-align: center;
+            background-color: #cac8c9;
+            color: black;
+        }
+        .table td {
+            text-align: center;
+        }
+        .btn-add {
+            text-align: left;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        .sidebar a#programs-link:hover {
+            color: #fb4e65;
+            background-color: #cac8c9;
+            transform: scale(1.1);
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .dropdown a:hover {
+            background-color: #cac8c9;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background: #c14661;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-item {
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+        }
+        .dropdown-item:hover {
+            background-color: #cac8c9;
+            color: #fc6485;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="site-logo">
+        <span>PILAPOSE<span>.</span>
+    </div>
+    <a href="{{ url_for('home_admin') }}" class="nav-link">Dashboard</a>
+    <a href="{{ url_for('users_admin') }}" class="nav-link" id="users-link">Users</a>
+    <a href="{{ url_for('programs_admin') }}" class="nav-link" id="programs-link">Programs</a>
+    <a href="{{ url_for('poses_admin') }}" class="nav-link" id="poses-link">Poses</a>
+    <a href="{{ url_for('exercises_admin') }}" class="nav-link" id="exercise-link">Exercises</a>
+    <a href="{{ url_for('articles_admin') }}" class="nav-link" id="articles-link">Articles</a>
+    <a href="{{ url_for('sentiment_admin') }}" class="nav-link" id="sentiment-link">Sentiment</a>
+    <a href="{{ url_for('index_admin') }}" class="nav-link" id="logout-link">Logout</a>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <nav class="navbar">
+        <div class="container-fluid">
+            <span class="site-logo">Programs</span>
+        </div>
+    </nav>
+
+    <!-- Tombol Add Program dan Form Pencarian -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <a href="#" class="btn" style="background-color: #cac8c9; color: black;" data-toggle="modal" data-target="#addProgramModal">Add Program</a>
+        </div>
+        <div class="col-md-6">
+            <form class="d-flex" style="max-width: 300px; margin-left: -593px;">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search Program">
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabel Programs -->
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Program Name</th>
+                <th>Image</th>
+                <th>Duration (Days)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for program in programs|reverse %}
+            <tr>
+                <td>{{ program.id }}</td>
+                <td>{{ program.program_name }}</td>
+                <td><img src="{{ url_for('static', filename=program.image) }}" alt="{{ program.program_name }}" width="100"></td>
+                <td>{{ program.duration_days }}</td>
+                <td>
+                    <a href="#" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editProgramModal" data-id="{{ program.id }}" data-program_name="{{ program.program_name }}" data-image="{{ program.image }}" data-duration_days="{{ program.duration_days }}">Edit</a>
+                    <a href="{{ url_for('delete_program', id=program.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this program?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal Add Program -->
+    <div class="modal fade" id="addProgramModal" tabindex="-1" aria-labelledby="addProgramModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProgramModalLabel">Add Program</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('add_program') }}" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="program_name">Program Name</label>
+                            <input type="text" class="form-control" id="program_name" name="program_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Image</label>
+                            <input type="file" class="form-control" id="image" name="image" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="duration_days">Duration (Days)</label>
+                            <input type="number" class="form-control" id="duration_days" name="duration_days" required>
+                        </div>
+                        <button type="submit" class="btn" style="background-color: #cac8c9; color: black; border: none; width: 100%;">Add Program</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Program -->
+    <div class="modal fade" id="editProgramModal" tabindex="-1" aria-labelledby="editProgramModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProgramModalLabel">Edit Program</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('edit_program') }}" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" id="program_id" name="id">
+                        <div class="form-group">
+                            <label for="program_name">Program Name</label>
+                            <input type="text" class="form-control" id="program_name" name="program_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Image</label>
+                            <input type="file" class="form-control" id="image" name="image">
+                            <input type="hidden" id="old_image" name="old_image">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration_days">Duration (Days)</label>
+                            <input type="number" class="form-control" id="duration_days" name="duration_days" required>
+                        </div>
+                        <button type="submit" class="btn" style="background-color: #cac8c9; color: black; border: none; width: 100%;">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mengisi form edit dengan data yang dipilih
+    $('#editProgramModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var program_name = button.data('program_name');
+        var image = button.data('image');
+        var duration_days = button.data('duration_days');
+
+        var modal = $(this);
+        modal.find('#program_id').val(id);
+        modal.find('#program_name').val(program_name);
+        modal.find('#old_image').val(image);
+        modal.find('#duration_days').val(duration_days);
+    });
+</script>
+
+<!-- Add Active class to menu item when clicked -->
+<script>
+    const currentUrl = window.location.pathname;
+    const links = document.querySelectorAll('.sidebar a');
+    links.forEach(link => {
+        if (link.href.includes(currentUrl)) {
+            link.classList.add('active');
+        }
+    });
+</script>
+
+<script>
+    // Fungsi pencarian
+    document.getElementById('searchInput').addEventListener('input', function() {
+        let searchValue = this.value.toLowerCase();
+        let rows = document.querySelectorAll('table tbody tr');
+        
+        rows.forEach(row => {
+            let name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            let email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            if (name.includes(searchValue) || email.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

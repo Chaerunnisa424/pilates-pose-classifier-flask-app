@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Analisis Sentimen</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Muli', sans-serif;
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f7fa;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #c14661;
+            color: #fff;
+            height: 100%;
+            padding-top: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar .site-logo {
+            font-size: 24px;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #fff;
+            display: block;
+            padding: 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #cac8c9;
+            color: #fb4e65;
+            transform: scale(1.1);
+        }
+        .sidebar a.active {
+            background-color: #cac8c9;
+            color: white; 
+            transform: scale(1); 
+        }
+        .sidebar a.active:hover {
+            background-color: #cac8c9; 
+            transform: scale(1.1);
+        }
+        .sidebar a#users-link:hover {
+            color: #fb4e65; 
+            background-color: #cac8c9;
+            transform: scale(1.1); 
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+        .navbar {
+            background-color: #c14661;
+            padding: 11px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .navbar .site-logo {
+            font-size: 24px;
+            color: #fff;
+            font-weight: 600;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            color: #cac8c9;
+        }
+        .table {
+            background-color: white;
+            border-radius: 10px;
+        }
+        .table th {
+            text-align: center;
+            background-color: #cac8c9; 
+            color: black; 
+        }
+        .table td {
+            text-align: center;
+        }
+        .btn-add {
+            display: block;
+            margin-top: 20px;
+            text-align: right;
+        }
+        .sidebar a#exercise-link:hover {
+            color: #fb4e65;  
+            background-color: #cac8c9;
+            transform: scale(1.1); 
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .dropdown a:hover {
+            background-color: #cac8c9;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background: #c14661;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-item {
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+        }
+        .dropdown-item:hover {
+            background-color: #cac8c9;
+            color: #fc6485;
+        }       
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+            width: calc(100% - 250px);
+        }
+        .card {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #cac8c9;
+            color: black;
+            font-weight: bold;
+        }
+        .chart-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            width: 100%; 
+            height: 500px; 
+        }
+        .badge {
+            font-size: 14px;
+        }
+        .table tbody tr:last-child {
+            border-bottom: 2px solid #dee2e6;
+        }
+        .table td {
+            border-top: none;
+        }
+        .sidebar a.active {
+            background-color: #cac8c9; 
+            color: white; 
+            transform: scale(1); 
+        }
+        .sidebar a.active:hover {
+            background-color: #cac8c9; 
+            color: #fb4e65; 
+            transform: scale(1.1);
+        }
+    </style>    
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="site-logo">
+            <span>PILAPOSE<span>.</span></span>
+        </div>
+        <a href="{{ url_for('home_admin') }}" class="nav-link">Dashboard</a>
+        <a href="{{ url_for('users_admin') }}" class="nav-link" id="users-link">Users</a>
+        <a href="{{ url_for('programs_admin') }}" class="nav-link" id="progrrams-link">Programs</a>
+        <a href="{{ url_for('poses_admin') }}" class="nav-link" id="poses-link">Poses</a>
+        <a href="{{ url_for('exercises_admin') }}" class="nav-link" id="exercise-link">Exercises</a>
+        <a href="{{ url_for('articles_admin') }}" class="nav-link" id="articles-link">Articles</a>
+        <a href="{{ url_for('sentiment_admin') }}" class="nav-link" id="sentiment-link">Sentiment</a>
+        <a href="{{ url_for('index_admin') }}" class="nav-link" id="logout-link">Logout</a>
+    </div>
+
+    <!-- Konten Utama -->
+    <div class="content">
+        <nav class="navbar">
+            <div class="container-fluid">
+                <span class="site-logo">Reviews</span>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Panel Hasil Analisis -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Hasil Analisis Sentimen</div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Review</th>
+                                        <th>Sentiment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in sentiment_data|reverse %}
+                                    <tr>
+                                        <td>{{ row.text }}</td>
+                                        <td>{{ 'Positif' if row.sentiment.lower() == 'positif' else 'Negatif' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel Diagram Lingkaran -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Perbandingan Sentimen</div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="sentimentChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data sentimen dari backend
+        var sentimentData = {
+            positive: {{ positive_count }},
+            negative: {{ negative_count }}
+        };
+
+        var ctx = document.getElementById('sentimentChart').getContext('2d');
+        var sentimentChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Positif', 'Negatif'],
+                datasets: [{
+                    data: [sentimentData.positive, sentimentData.negative],
+                    backgroundColor: ['#c14661', '#cac8c9']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    </script>
+
+<!-- Add Active class to menu item when clicked -->
+<script>
+    const currentUrl = window.location.pathname;
+    const links = document.querySelectorAll('.sidebar a');
+    links.forEach(link => {
+        if (link.href.includes(currentUrl)) {
+            link.classList.add('active');
+        }
+    });
+</script>
+</body>
+</html>

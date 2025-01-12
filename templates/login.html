@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <link rel="apple-touch-icon" href="apple-icon.png">
+    <link rel="icon" href="static/assets/images/logo.png">
+    <link rel="stylesheet" href="static/assets/css/normalize.css">
+    <link rel="stylesheet" href="static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="static/assets/css/flag-icon.min.css">
+    <link rel="stylesheet" href="static/assets/css/cs-skin-elastic.css">
+    <link rel="stylesheet" href="static/assets/scss/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet'>
+    <style>
+        /* Body settings */
+        body {
+            margin: 0;
+            height: 100vh;
+            position: relative; /* Make sure body can hold the pseudo-element */
+        }
+
+        /* Pseudo-element for background with blur effect */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("static/assets/images/bg2.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            filter: blur(2px); /* Apply the blur effect */
+            z-index: -1; /* Place the pseudo-element behind the content */
+        }
+
+        /* Container for centering the content */
+        .container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* Ensure the container takes up the full height */
+        }
+
+        /* Login content styles */
+        .login-content {
+            width: 100%;
+            max-width: 500px; /* Set max-width for login form */
+        }
+
+        /* Login form styles */
+        .login-form {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Logo styles inside the form */
+        .login-logo {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-logo img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="login-content">
+            <div class="login-form">
+                <!-- Logo inside the form container -->
+                <div class="login-logo">
+                    <a href="#">
+                        <img src="static/assets/images/logo.jpg" alt="Logo">
+                    </a>
+                </div>
+
+                <!-- Flash message display -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="alert-container">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    <p>{{ message }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <!-- Form Login -->
+                <form id="auth-form" action="{{ url_for('login') }}" method="POST">
+                    <div class="form-group">
+                        <label for="username_or_email">Username/Email</label>
+                        <input type="text" class="form-control" id="username_or_email" name="username_or_email" placeholder="Username or Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="remember"> Remember Me
+                        </label>
+                        <label class="pull-right">
+                            <a href="password-reset.html">Forgotten Password?</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">Sign In</button>
+                </form>
+                <div class="register-link m-t-15 text-center">
+                    <p>Don't have an account? <a href="register" class="class-item-thumbnail"> Sign Up Here</a></p>
+                </div>
+                <div class="middle-text">
+                    <hr>
+                </div>
+                <div class="social-logins text-center">
+                    <button type="button" class="input-google rounded-circle" onclick="window.location.href = 'google-auth.html';">
+                        <img src="static/assets/images/google.png" alt="Google">
+                    </button>
+                    <button type="button" class="input-facebook rounded-circle" onclick="window.location.href = 'facebook-auth.html';">
+                        <img src="static/assets/images/facebook.png" alt="Facebook">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/assets/js/jquery-2.1.4.min.js"></script>
+    <script src="static/assets/js/popper.min.js"></script>
+    <script src="static/assets/js/plugins.js"></script>
+    <script src="static/assets/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Timer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+        .circle-timer {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 0 auto;
+        }
+        .circle-timer svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        .circle-timer circle {
+            fill: none;
+            stroke-width: 10;
+        }
+        .circle-timer .background-circle {
+            stroke: #ccc;
+        }
+        .circle-timer .progress-circle {
+            stroke: #c83660;
+            stroke-linecap: round;
+            stroke-dasharray: 942;
+            stroke-dashoffset: 942;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+        .time-display {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 20px;
+        }
+        .circle-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 430px;
+            height: 430px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .circle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 20px 5px;
+            background-color: #c83660;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .completion-card {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .completion-card h2 {
+            color: #28a745;
+        }
+        @media (max-width: 768px) {
+            .circle-timer {
+                width: 500px;
+                height: 500px;
+            }
+            .time-display {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Display Program and User Info -->
+    <h1>{{ program['program_name'] }}</h1>
+    <p><strong>Durasi Program:</strong> {{ program['duration_days'] }} Hari</p>
+    <p><strong>Pose Saat Ini:</strong> {{ pose['pose_name'] }}</p>
+
+    <!-- Timer and Pose Image -->
+    <div class="circle-timer">
+        <svg>
+            <circle class="background-circle" cx="250" cy="250" r="225"></circle>
+            <circle class="progress-circle" cx="250" cy="250" r="225"></circle>
+        </svg>
+        <div class="circle-image">
+            <img id="poseImage" src="data:image/png;base64,{{ pose['image'] }}" alt="Workout Image">
+        </div>
+        <div class="time-display" id="timeDisplay">{{ pose['duration_secs'] or 30 }} seconds</div>
+    </div><br><br><br><br>
+
+    <!-- Timer Controls -->
+    <button id="toggleButton">
+        <i class="fas fa-play"></i> <!-- Play icon to start -->
+    </button>
+    <button id="resetButton" disabled>Reset</button>
+
+    <!-- Tombol "Next" atau "Selesai" -->
+    <!-- Tombol "Next" atau "Selesai" -->
+    {% if is_last_pose %}
+    <button id="completeButton">Selesai</button>
+    {% elif next_pose %}
+    <a href="{{ url_for('timer', pose_id=next_pose['id']) }}">
+        <button id="nextButton">Next</button>
+    </a>
+    {% endif %}
+
+
+    <!-- Completion Card -->
+    <div id="completionCard" class="completion-card">
+    <h2>Program Completed!</h2>
+    <p>Selamat! Anda telah menyelesaikan program untuk hari ini.</p>
+    <strong>Total Kalori:</strong> {{ pose['calories'] or 0 }} Kcal<br>
+    <button onclick="window.location.href='/programs';">Kembali ke Program</button>
+    </div>
+
+    <script>
+        // Debugging Variables
+// Debugging Variables
+const durationSecs = {{ pose['duration_secs'] | default(30) }};
+const userId = {{ progress['user_id'] | default(0) }};
+const programId = {{ pose['program_id'] | default(0) }};
+const currentDay = {{ progress['current_day'] | default(0) }};
+const calories = {{ pose['calories'] | default(0) }};
+const poseId = {{ pose['id'] | default(0) }}; // Tambahkan pose_id
+
+console.log("Timer Initialization:", { durationSecs, userId, programId, currentDay, calories, poseId });
+
+const progressCircle = document.querySelector('.progress-circle');
+const timeDisplay = document.getElementById('timeDisplay');
+const toggleButton = document.getElementById('toggleButton');
+const resetButton = document.getElementById('resetButton');
+const completionCard = document.getElementById('completionCard');
+const completeButton = document.getElementById('completeButton');
+
+let timer;
+let elapsedTime = 0;
+let isTimerRunning = false;
+const circumference = 2 * Math.PI * 225;
+
+progressCircle.style.strokeDasharray = `${circumference}`;
+progressCircle.style.strokeDashoffset = `${circumference}`;
+
+// Fungsi untuk memperbarui tampilan waktu
+function updateDisplay(seconds) {
+    timeDisplay.textContent = `${seconds} seconds`;
+}
+
+// Fungsi untuk memperbarui animasi lingkaran
+function updateCircle(elapsedTime) {
+    const offset = circumference - (elapsedTime / durationSecs) * circumference;
+    progressCircle.style.strokeDashoffset = `${offset}`;
+}
+
+// Fungsi untuk menyimpan progres ke backend
+function saveProgress() {
+    const data = {
+        user_id: userId,             // ID pengguna
+        program_id: programId,       // ID program
+        pose_id: poseId,             // ID pose (tambahkan ke payload)
+        completed: false             // Status apakah program selesai
+    };
+
+    console.log("Saving Progress:", data);
+
+    fetch('/save_progress', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data) // Kirim data ke backend
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log("Save Progress Response:", result);
+        if (result.status === "success") {
+            alert("Progress saved successfully!");
+            window.location.href = '/programs'; // Redirect setelah menyimpan
+        } else {
+            alert("Failed to save progress: " + result.message);
+        }
+    })
+    .catch(error => {
+        console.error("Error saving progress:", error);
+        alert("An error occurred while saving progress.");
+    });
+}
+
+// Fungsi untuk memulai timer
+function startWorkoutTimer() {
+    timer = setInterval(() => {
+        if (elapsedTime < durationSecs) {
+            elapsedTime++;
+            updateDisplay(durationSecs - elapsedTime);
+            updateCircle(elapsedTime);
+        } else {
+            clearInterval(timer);
+            console.log("Timer Completed");
+            if (completeButton) {
+                saveProgress(); // Simpan progres secara otomatis
+                completionCard.style.display = "block"; // Tampilkan kartu selesai
+            }
+        }
+    }, 1000);
+
+    isTimerRunning = true;
+    resetButton.disabled = false;
+    toggleButton.innerHTML = '<i class="fas fa-pause"></i>'; // Ubah ikon ke pause
+}
+
+// Fungsi untuk menjeda timer
+function pauseWorkout() {
+    clearInterval(timer);
+    isTimerRunning = false;
+    toggleButton.innerHTML = '<i class="fas fa-play"></i>'; // Ubah ikon ke play
+}
+
+// Fungsi untuk mereset timer
+function resetCountdown() {
+    clearInterval(timer);
+    elapsedTime = 0;
+    updateDisplay(durationSecs);
+    progressCircle.style.strokeDashoffset = `${circumference}`;
+    toggleButton.innerHTML = '<i class="fas fa-play"></i>';
+    resetButton.disabled = true;
+}
+
+// Event listener untuk tombol toggle
+toggleButton.addEventListener('click', () => {
+    if (isTimerRunning) {
+        pauseWorkout();
+    } else {
+        startWorkoutTimer();
+    }
+});
+
+// Event listener untuk tombol reset
+resetButton.addEventListener('click', resetCountdown);
+
+// Event listener untuk tombol selesai
+if (completeButton) {
+    completeButton.addEventListener('click', saveProgress);
+}
+
+// Perbarui tampilan waktu awal
+updateDisplay(durationSecs);
+
+    </script>
+</body>
+</html>

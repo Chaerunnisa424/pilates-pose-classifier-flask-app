@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Muli', sans-serif;
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f7fa;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #c14661;
+            color: #fff;
+            height: 100%;
+            padding-top: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar .site-logo {
+            font-size: 24px;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #fff;
+            display: block;
+            padding: 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #cac8c9;
+            color: #fb4e65; 
+            transform: scale(1.1); 
+        }
+        .sidebar a.active {
+            background-color: #cac8c9;
+            color: white; 
+            transform: scale(1); 
+        }
+        .sidebar a.active:hover {
+            background-color: #cac8c9; 
+            transform: scale(1.1); 
+        }
+        .sidebar a#users-link:hover {
+            color: #fb4e65; 
+            background-color: #cac8c9;
+            transform: scale(1.1); 
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+        .navbar {
+            background-color: #c14661;
+            padding: 11px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }   
+        .navbar .site-logo {
+            font-size: 24px;
+            color: #fff;
+            font-weight: 600;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            color: #cac8c9;
+        }
+        .table {
+            background-color: white; 
+            border-radius: 10px;
+        }
+        .table th {
+            text-align: center;
+            background-color: #cac8c9; 
+            color: black; 
+        }
+        .table td {
+            text-align: center;
+        }
+        .btn-add {
+            text-align: left;
+            margin-bottom: 10px;
+            margin-top: 30px;
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .dropdown a:hover {
+            background-color: #cac8c9;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%; 
+            background: #c14661; 
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-item {
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+        }
+        .dropdown-item:hover {
+            background-color: #cac8c9;
+            color: #fc6485;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="site-logo">
+        <span>PILAPOSE<span>.</span> 
+    </div>
+    <a href="{{ url_for('home_admin') }}" class="nav-link">Dashboard</a>
+    <a href="{{ url_for('users_admin') }}" class="nav-link" id="users-link">Users</a>
+    <a href="{{ url_for('programs_admin') }}" class="nav-link" id="progrrams-link">Programs</a>
+    <a href="{{ url_for('poses_admin') }}" class="nav-link" id="poses-link">Poses</a>
+    <a href="{{ url_for('exercises_admin') }}" class="nav-link" id="exercise-link">Exercises</a>
+    <a href="{{ url_for('articles_admin') }}" class="nav-link" id="articles-link">Articles</a>
+    <a href="{{ url_for('sentiment_admin') }}" class="nav-link" id="sentiment-link">Sentiment</a>
+    <a href="{{ url_for('index_admin') }}" class="nav-link" id="logout-link">Logout</a>
+</div>
+
+<div class="content">
+    <nav class="navbar">
+        <div class="container-fluid">
+            <span class="site-logo">Users</span>
+        </div>
+    </nav>
+
+    <!-- Tombol Add User dan Form Pencarian -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <a href="#" class="btn" style="background-color: #cac8c9; color: black;" data-toggle="modal" data-target="#addUserModal">Add User</a>
+        </div>
+        <div class="col-md-6">
+            <form class="d-flex" style="max-width: 300px; margin-left: -610px;">
+                <input type="text" class="form-control" id="searchInput" placeholder="Search User">
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabel Pengguna -->
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data User akan dimuat di sini -->
+            {% for user in users|reverse %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <a href="#" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editUserModal" data-id="{{ user.id }}" data-username="{{ user.username }}" data-email="{{ user.email }}">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal Tambah User -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/add_user" method="POST">
+                        <div class="form-group">
+                            <label for="username">Name</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="btn" style="background-color: #cac8c9; color: black; border: none; width: 100%;">Add User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit User -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/edit_user" method="POST">
+                        <input type="hidden" id="edit_user_id" name="id">
+                        <div class="form-group">
+                            <label for="edit_username">Nama</label>
+                            <input type="text" class="form-control" id="edit_username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_email">Email</label>
+                            <input type="email" class="form-control" id="edit_email" name="email" required>
+                        </div>
+                        <button type="submit" class="btn" style="background-color: #cac8c9; color: black; border: none; width: 100%;">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // Script untuk mengisi modal Edit dengan data user yang dipilih
+    $('#editUserModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var username = button.data('username');
+        var email = button.data('email');
+        
+        var modal = $(this);
+        modal.find('.modal-body #edit_user_id').val(id);
+        modal.find('.modal-body #edit_username').val(username);
+        modal.find('.modal-body #edit_email').val(email);
+    });
+</script>
+
+<!-- Add Active class to menu item when clicked -->
+<script>
+    const currentUrl = window.location.pathname;
+    const links = document.querySelectorAll('.sidebar a');
+    links.forEach(link => {
+        if (link.href.includes(currentUrl)) {
+            link.classList.add('active');
+        }
+    });
+</script>
+
+<script>
+    // Fungsi pencarian
+    document.getElementById('searchInput').addEventListener('input', function() {
+        let searchValue = this.value.toLowerCase();
+        let rows = document.querySelectorAll('table tbody tr');
+        
+        rows.forEach(row => {
+            let name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            let email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            if (name.includes(searchValue) || email.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

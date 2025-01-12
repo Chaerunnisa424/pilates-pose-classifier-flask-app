@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Pilates &mdash; Website Pilates</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="static/assets/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="static/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/assets/css/jquery-ui.css">
+    <link rel="stylesheet" href="static/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/assets/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="static/assets/css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="static/assets/css/jquery.fancybox.min.css">
+
+    <link rel="stylesheet" href="static/assets/css/bootstrap-datepicker.css">
+
+    <link rel="stylesheet" href="static/assets/fonts/flaticon/font/flaticon.css">
+
+    <link rel="stylesheet" href="static/assets/css/aos.css">
+    <link href="static/assets/css/jquery.mb.YTPlayer.min.css" media="all" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="static/assets/css/style.css">
+    
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+</head>
+
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+
+        <div class="site-wrap">
+
+            <!-- Navbar -->
+            <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center">
+                        <div class="site-logo"><a href="index.html">Pilapose<span>.</span></a></div>
+                        <div class="ml-auto">
+                            <nav class="site-navigation position-relative text-right" role="navigation">
+                                <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                                    <li><a href="#home-section" class="nav-link">Home</a></li>
+                                    <li><a href="/programs" class="nav-link">Programs</a></li>
+                                    <li><a href="/exercise" class="nav-link">Exercise</a></li>
+                                    <li><a href="/healthtips" class="nav-link">Health Tips</a></li>
+                                    <li><a href="/chatbot" class="nav-link">Flexbot</a></li>
+                                    <li><a href="/contact-section" class="nav-link">Contact</a></li>
+                                    <li>
+                                        <a href="{{ url_for('profile') }}">
+                                            <img src="{{ url_for('static', filename='assets/images/user.png') }}" alt="Profile Icon" style="width: 24px; height: 24px;">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle float-right">
+                                <span class="icon-menu h3"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        
+            <!-- Welcome Section -->
+            <div class="intro-section bgimg" style="background-image: url('static/assets/images/bg1.jpg');" id="home-section">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12 mx-auto text-center" data-aos="fade-up">
+                            <!-- Welcome Message -->
+                            <h1 class="mb-3">Welcome, {{ username }}!</h1>
+                            <p class="lead mx-auto desc mb-5">Setiap program dirancang untuk membantu Anda membangun kekuatan, fleksibilitas, dan kesehatan tubuh</p>
+                            <p class="text-center">
+                                <a href="/program" class="btn btn-outline-white py-3 px-5">Pilates Detection</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    
+
+
+        <div class="site-section">
+            <div class="container">
+        
+                <div class="row justify-content-center text-center mb-5">
+                    <div class="col-md-8 section-heading">
+                        <span class="subheading">Tetap Sehat</span>
+                        <h2 class="heading mb-3">Bangun Tubuh Anda dengan Latihan</h2>
+                        <p>Mulailah perjalanan kebugaran Anda bersama kami. Dengan latihan yang terstruktur, Anda dapat meningkatkan kekuatan, fleksibilitas, dan keseimbangan tubuh Anda.</p>
+                    </div>
+                </div>
+        
+                <!-- Slider Section -->
+                <div class="owl-carousel nonloop-block-14 block-14" data-aos="fade">
+                    <div class="slide">
+                        <div class="ftco-feature-1">
+                            <span class="icon flaticon-fit"></span>
+                            <div class="ftco-feature-1-text">
+                                <h2>Keseimbangan Tubuh</h2>
+                                <p>Latihan yang dirancang untuk meningkatkan keseimbangan tubuh dan fleksibilitas Anda.</p>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="slide">
+                        <div class="ftco-feature-1">
+                            <span class="icon flaticon-gym-1"></span>
+                            <div class="ftco-feature-1-text">
+                                <h2>Kekuatan Inti</h2>
+                                <p>Bangun otot inti yang kuat untuk mendukung postur tubuh dan gerakan sehari-hari.</p>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="slide">
+                        <div class="ftco-feature-1">
+                            <span class="icon flaticon-gym"></span>
+                            <div class="ftco-feature-1-text">
+                                <h2>Peningkatan Postur</h2>
+                                <p>Perbaiki postur Anda untuk mengurangi nyeri dan meningkatkan efisiensi gerakan.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <div class="ftco-feature-1">
+                            <span class="icon flaticon-fruit-juice"></span>
+                            <div class="ftco-feature-1-text">
+                                <h2>Kesejahteraan Mental</h2>
+                                <p>Rasakan ketenangan pikiran melalui latihan yang menggabungkan pernapasan dan gerakan.</p>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="slide">
+                        <div class="ftco-feature-1">
+                            <span class="icon flaticon-stationary-bike"></span>
+                            <div class="ftco-feature-1-text">
+                                <h2>Ketahanan Tubuh</h2>
+                                <p>Tingkatkan daya tahan tubuh Anda dengan latihan yang menyeluruh dan efektif.</p>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
+        
+            </div>
+        </div>
+        
+
+
+        <div class="container py-5">
+            <h1>Welcome, {{ username }}!</h1>
+            <p>Submit your reviews!</p>
+    
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} mt-3" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+    
+            <!-- Review Form -->
+            <form method="POST" action="/home" class="mb-5">
+                <div class="form-group">
+                    <label for="review">Enter your review:</label>
+                    <textarea id="review" name="review" class="form-control" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn" style="background-color: #c83660; color: white; border: none; margin-top: 15px;">Submit Review</button>
+            </form>
+    
+            
+        </div>
+    
+
+
+       <!-- Footer Section -->
+    <footer class="footer-section" style="background-color: #f9f9f9; background-size: cover; background-repeat: no-repeat; background-position: center; padding: 60px 0;">
+        <div class="container">
+
+            <!-- Divider Line -->
+            <hr style="border: 1px solid rgba(0, 0, 0, 0.1); margin-bottom: 2rem;">
+
+            <div class="row">
+                <!-- About Section -->
+                <div class="col-md-4">
+                    <h3 style="color: #333333;">Tentang Pilapose</h3>
+                    <p style="color: #666666;">Pilapose adalah platform inovatif untuk membantu Anda mencapai kebugaran tubuh dan keseimbangan pikiran melalui Pilates. Nikmati fitur seperti program terstruktur, deteksi gerakan AI, dan chatbot interaktif.</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-md-3 ml-auto">
+                    <h3 style="color: #333333;">Tautan Cepat</h3>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="/home">Beranda</a></li>
+                        <li><a href="#program-section">Program</a></li>
+                        <li><a href="/exercise">Latihan</a></li>
+                        <li><a href="/healthtips">Tips Kesehatan</a></li>
+                        <li><a href="/chatbot">Chatbot</a></li>
+                        <li><a href="/contact">Kontak</a></li>
+                    </ul>
+                </div>
+
+                <!-- Subscription Form -->
+                <div class="col-md-4">
+                    <h3 style="color: #333333;">Berlangganan</h3>
+                    <p style="color: #666666;">Dapatkan tips kebugaran terbaru dan pembaruan langsung ke kotak masuk Anda.</p>
+                    <form action="#">
+                        <div class="d-flex mb-5">
+                            <input type="text" class="form-control rounded-0" placeholder="Email Anda" style="border: 1px solid #ccc;">
+                            <input type="submit" class="btn btn-primary rounded-0" value="Berlangganan" style="background-color: #c83660; border: none;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="row pt-5 mt-5 text-center">
+                <div class="col-md-12">
+                    <div class="pt-5">
+                        <p style="color: #666666;">
+                            Copyright &copy;
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script> Pilapose. All rights reserved.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- .site-wrap -->
+
+    <script>
+        const sentimentCounts = {{ sentiment_counts|tojson }};
+        const data = {
+            labels: ['Positive', 'Negative'],
+            datasets: [{
+                data: [
+                    sentimentCounts.positive, 
+                    sentimentCounts.negative
+                ],
+                backgroundColor: ['#36A2EB', '#FF6384']
+            }]
+        };
+
+        const ctx = document.getElementById('sentimentPieChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: data
+        });
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="static/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="static/assets/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="static/assets/js/jquery-ui.js"></script>
+    <script src="static/assets/js/popper.min.js"></script>
+    <script src="static/assets/js/bootstrap.min.js"></script>
+    <script src="static/assets/js/owl.carousel.min.js"></script>
+    <script src="static/assets/js/jquery.stellar.min.js"></script>
+    <script src="static/assets/js/jquery.countdown.min.js"></script>
+    <script src="static/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="static/assets/js/jquery.easing.1.3.js"></script>
+    <script src="static/assets/js/aos.js"></script>
+    <script src="static/assets/js/jquery.fancybox.min.js"></script>
+    <script src="static/assets/js/jquery.sticky.js"></script>
+    <script src="static/assets/js/jquery.mb.YTPlayer.min.js"></script>
+    <script src="path/to/chatbot.js"></script>
+
+
+
+    <script src="static/assets/js/main.js"></script>
+
+</body>
+
+</html>
